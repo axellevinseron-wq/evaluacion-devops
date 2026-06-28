@@ -51,7 +51,7 @@ Sistema e-commerce con 10 microservicios independientes, MySQL dedicada por serv
 
 No es necesario levantar los otros 9 microservicios para probar este stack. Con `mysql` (BD de `ms-carrito`) y los servicios de observabilidad es suficiente.
 
-### 1. Requisitos previos.
+### 1. Requisitos previos
 
 - **Docker** & **Docker Compose** v2+
 - **Java 17+** y **Maven 3.8+** (opcional, solo si quieres compilar fuera de Docker)
