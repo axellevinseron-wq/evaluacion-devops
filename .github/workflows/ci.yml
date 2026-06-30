@@ -1,4 +1,4 @@
-name: CI - ms_carrito
+name: CI - ms-carrito
 
 on:
   push:
@@ -11,24 +11,32 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        # Configura la carpeta correcta para todos los comandos
+        working-directory: ms_carrito 
 
     steps:
       - name: Descargar código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4 
 
       - name: Configurar Java
         uses: actions/setup-java@v4
         with:
-          distribution: temurin
-          java-version: 21
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'
 
+      # Se ejecuta dentro de ms_carrito/
       - name: Dar permisos al wrapper
-        run: chmod +x ./mvnw
+        run: chmod +x ./mvnw 
 
+      # Se ejecuta dentro de ms_carrito/
       - name: Compilar proyecto
         run: ./mvnw clean package -DskipTests
 
+      # Se ejecuta dentro de ms_carrito/ buscando el 'Dockerfile' ahí dentro
       - name: Construir imagen Docker
         run: docker build -t ms-carrito .
