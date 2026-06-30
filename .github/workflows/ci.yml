@@ -30,7 +30,7 @@ jobs:
           java-version: 21
           # Opcional pero recomendado: guarda en caché tus dependencias de Maven para ir más rápido
           cache: 'maven'
-          cache-dependency-path: 'ms-carrito/pom.xml' 
+          cache-dependency-path: 'ms_carrito/pom.xml' 
 
       - name: Dar permisos al wrapper
         run: chmod +x ./mvnw # 👈 Ahora sí encontrará el mvnw dentro de tu carpeta
