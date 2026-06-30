@@ -36,14 +36,5 @@ jobs:
         run: ./mvnw clean package -DskipTests
 
       - name: Construir imagen Docker
-        # Si falla el nombre estándar, le obligamos a buscar el archivo en la ruta actual
-        run: |
-          if [ -f ./Dockerfile ]; then
-            docker build -f ./Dockerfile -t ms-carrito .
-          elif [ -f ./dockerfile ]; then
-            docker build -f ./dockerfile -t ms-carrito .
-          else
-            echo "❌ ERROR: No se encontró ningún archivo Dockerfile o dockerfile en la carpeta ms_carrito"
-            ls -la
-            exit 1
-          fi
+        # Esto compila y genera la imagen docker llamada 'ms-carrito' automáticamente
+        run: ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=ms-carrito -DskipTests
