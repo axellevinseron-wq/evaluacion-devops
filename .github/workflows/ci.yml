@@ -1,0 +1,34 @@
+name: CI - ms-carrito
+
+on:
+  push:
+    branches:
+      - main
+      - pruebas-aws
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Dar permisos al wrapper
+        run: chmod +x ./mvnw
+
+      - name: Compilar proyecto
+        run: ./mvnw clean package -DskipTests
+
+      - name: Construir imagen Docker
+        run: docker build -t ms-carrito .
