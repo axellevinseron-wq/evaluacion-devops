@@ -16,7 +16,7 @@ jobs:
     # 1. Le decimos a GitHub que todo se ejecute dentro de tu carpeta
     defaults:
       run:
-        working-directory: ms-carrito # 👈 Cambia esto si tu carpeta tiene otro nombre exacto
+        working-directory: ms_carrito # 👈 Cambia esto si tu carpeta tiene otro nombre exacto
 
     steps:
       # Actualizado a @v4.3.0+ o @v5 si estuviera disponible para evitar el warning de Node
