@@ -1,4 +1,4 @@
-name: CI - ms-carrito
+name: CI - ms_carrito
 
 on:
   push:
@@ -11,33 +11,24 @@ on:
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
-    # 1. Le decimos a GitHub que todo se ejecute dentro de tu carpeta
-    defaults:
-      run:
-        working-directory: ms_carrito # 👈 Cambia esto si tu carpeta tiene otro nombre exacto
-
     steps:
-      # Actualizado a @v4.3.0+ o @v5 si estuviera disponible para evitar el warning de Node
       - name: Descargar código
-        uses: actions/checkout@v4 
+        uses: actions/checkout@v4
 
       - name: Configurar Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 21
-          # Opcional pero recomendado: guarda en caché tus dependencias de Maven para ir más rápido
-          cache: 'maven'
-          cache-dependency-path: 'ms_carrito/pom.xml' 
 
       - name: Dar permisos al wrapper
-        run: chmod +x ./mvnw # 👈 Ahora sí encontrará el mvnw dentro de tu carpeta
+        run: chmod +x ./mvnw
 
       - name: Compilar proyecto
         run: ./mvnw clean package -DskipTests
 
-      # 2. Para Docker, necesitamos pasarle el contexto correcto de la carpeta
       - name: Construir imagen Docker
-        run: docker build -t ms-carrito . # El "." ahora representa la carpeta "ms-carrito"
+        run: docker build -t ms-carrito .
