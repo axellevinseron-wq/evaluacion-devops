@@ -1,19 +1,18 @@
-name: Deploy to AWS EC2
+name: Deploy a EC2
 
 on:
-  workflow_run:
-    workflows: ["CI - ms-carrito"]
-    types:
-      - completed
+  push:
+    branches:
+      - pruebas-aws
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
-      - name: Conectar por SSH y desplegar
+      - name: Conectar a EC2 y desplegar
         uses: appleboy/ssh-action@v1.2.0
+
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
@@ -21,8 +20,10 @@ jobs:
           script: |
             cd ~/evaluacion-devops
 
-            git checkout pruebas-aws
             git pull origin pruebas-aws
 
-            docker compose down
             docker compose up -d --build
+
+            docker image prune -f
+
+            echo "Deploy completado correctamente"
