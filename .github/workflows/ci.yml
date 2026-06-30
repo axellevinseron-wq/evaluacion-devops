@@ -15,7 +15,7 @@ jobs:
 
     defaults:
       run:
-        # Configura la carpeta correcta para todos los comandos
+        # Volvemos a tu carpeta raíz ms_carrito
         working-directory: ms_carrito 
 
     steps:
@@ -26,17 +26,24 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '21'
+          java-version: '17' # Respetando el Java 17 de tu stack técnico
           cache: 'maven'
 
-      # Se ejecuta dentro de ms_carrito/
       - name: Dar permisos al wrapper
         run: chmod +x ./mvnw 
 
-      # Se ejecuta dentro de ms_carrito/
       - name: Compilar proyecto
         run: ./mvnw clean package -DskipTests
 
-      # Se ejecuta dentro de ms_carrito/ buscando el 'Dockerfile' ahí dentro
       - name: Construir imagen Docker
-        run: docker build -t ms-carrito .
+        # Si falla el nombre estándar, le obligamos a buscar el archivo en la ruta actual
+        run: |
+          if [ -f ./Dockerfile ]; then
+            docker build -f ./Dockerfile -t ms-carrito .
+          elif [ -f ./dockerfile ]; then
+            docker build -f ./dockerfile -t ms-carrito .
+          else
+            echo "❌ ERROR: No se encontró ningún archivo Dockerfile o dockerfile en la carpeta ms_carrito"
+            ls -la
+            exit 1
+          fi
