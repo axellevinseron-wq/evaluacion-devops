@@ -3,7 +3,7 @@ name: Deploy to Amazon ECS
 on:
   push:
     branches:
-      - pruebas-aws  # Tu rama de pruebas actual
+      - pruebas-aws  # Se dispara cuando haces push a esta rama
 
 jobs:
   deploy:
@@ -19,7 +19,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}  # Obligatorio para AWS Academy
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}  # Requerido en entornos Voclabs
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -33,9 +33,9 @@ jobs:
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
           IMAGE_TAG: latest
         run: |
-          # Construye la imagen usando el Dockerfile de la raíz del proyecto
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-          # Sube la imagen de tu microservicio a ECR
+          # Compilamos usando el Dockerfile interno de ms_carrito y apuntando a esa carpeta
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG ./ms_carrito
+          # Subimos la imagen compilada a tu repositorio en AWS
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
