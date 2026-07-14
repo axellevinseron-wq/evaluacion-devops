@@ -376,3 +376,5 @@ curl http://localhost:8083/api/carrito    # OK → 200
 **Última actualización:** 2026-06-28  
 **Mantenedor:** EcoMarket Team
 
+Prueba GitHub Actions CD
+Prueba despliegue automático

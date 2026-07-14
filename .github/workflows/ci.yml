@@ -1,0 +1,40 @@
+name: CI - ms-carrito
+
+on:
+  push:
+    branches:
+      - main
+      - pruebas-aws
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        # Volvemos a tu carpeta raíz ms_carrito
+        working-directory: ms_carrito 
+
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4 
+
+      - name: Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17' # Respetando el Java 17 de tu stack técnico
+          cache: 'maven'
+
+      - name: Dar permisos al wrapper
+        run: chmod +x ./mvnw 
+
+      - name: Compilar proyecto
+        run: ./mvnw clean package -DskipTests
+
+      - name: Construir imagen Docker
+        # Esto compila y genera la imagen docker llamada 'ms-carrito' automáticamente
+        run: ./mvnw spring-boot:build-image -Dspring-boot.build-image.imageName=ms-carrito -DskipTests
